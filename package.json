@@ -1,0 +1,11 @@
+{
+  "name": "chat-room",
+  "version": "0.0.1",
+  "description": "my first ws demo base on nodejs and socket.io",
+  "dependencies": {
+    "express": "^4.15.2",
+    "mysql2": "^1.6.4",
+    "sequelize": "^4.42.0",
+    "socket.io": "^2.2.0"
+  }
+}
