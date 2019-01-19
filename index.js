@@ -35,10 +35,10 @@ app.get('/user', async function(req, res){
     // res.send(querys);
 
     let UserModel = require('./application/model/user');
-    /*let user = await UserModel.model().findByPk(1).then(user=>{
+    let user = await UserModel.model().findByPk(1).then(user=>{
         return user;
     });
-    res.send(user);*/
+    res.send(user);
 
     let users = UserModel.model().findAll({
         where: {
