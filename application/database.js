@@ -3,9 +3,9 @@
 module.exports = {
     host: "localhost",
     dialect: "mysql", // "mysql"|"sqlite"|"postgres"|"mssql"
-    database: "haoyuezhibo",
-    username: "root",
-    password: "root",
+    database: DB_NAME,
+    username: USERNAME,
+    password: PASSWORD,
     operatorsAliases: false,
 
     pool: {
