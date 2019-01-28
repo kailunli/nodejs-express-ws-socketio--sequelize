@@ -1,2 +1,1 @@
-# nodejs-socketio-Sequelize
-# nodejs-socketio-Sequelize
+# nodejs-express-ws(socket.io)-sequelize
