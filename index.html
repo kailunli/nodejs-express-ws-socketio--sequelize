@@ -1,62 +1,134 @@
 <!doctype html>
 <html>
-  <head>
+<head>
     <title> Socket.IO chat - LLKL </title>
     <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font: 13px Helvetica, Arial; }
+
+        #chat {
+            position: fixed;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 60%;
+            height: 60%;
+            border: 1px solid pink;
+        }
+
+        #chat input {
+            position: absolute;
+            left: 2px;
+            bottom: 5px;
+            width: 89.5%;
+            padding: 10px;
+            margin-right: 1px;
+            line-height: 10px;
+            border: 1px solid #eee;
+        }
+
+        #chat button {
+            position: absolute;
+            right: 2px;
+            bottom: 5px;
+            width: 10%;
+            padding: 10px;
+            background: rgb(130, 224, 255);
+            border: 1px solid #eee;
+
+        }
+
+        #messages { list-style-type: none; margin: 0; padding: 0; }
+        #messages li { padding: 5px 10px; }
+        #messages li:nth-child(odd) { background: #eee; }
     </style>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button name="send" type="submit" style="cursor:pointer;">Send</button>
-    </form>
-
+    <style type="text/css" href="./layui-2.4.5/css/layui.css"></style>
+</head>
+<body>
+<div>
     <button name="register">注册用户</button>
-	
-	<script src="/socket.io/socket.io.js"></script>
-	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-	<script>
-        $(function () {
-            var socket = io();
-            $('form').submit(function(e){
-                e.preventDefault(); // prevents page reloading
-                var message = $.trim($('#m').val());
-                if (message=='') {
-                    return false;
-                }
-                socket.emit('chat message', message);
-                $('#m').val('');
+</div>
+<div id="chat">
+    <ul id="messages"></ul>
+    <form id="msm-form" action="">
+        <input id="m" autocomplete="off" /><button name="send" type="submit" style="cursor:pointer;">Send</button>
+    </form>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script src="./layui-2.4.5/layui.js"></script>
+<script>
+    let getQuerys = function() {
+        let params = {};
+        try {
+            let query = location.search.substr(1);
+            let querys = query.split("&");
+            for (let index in querys) {
+                let param = querys[index].split("=");
+                params[param[0]] = param[1];
+            }
+        } catch (e) {
+            throw e;
+        }
+
+        if (typeof params != "object" || !params instanceof Object) {
+            return {};
+        }
+        return params;
+    };
+
+    $(function () {
+        var socket = io();
+        $('#msm-form').submit(function(e) {
+            e.preventDefault(); // prevents page reloading
+            var message = $.trim($('#m').val());
+            if (message=='') {
                 return false;
-            });
+            }
 
-            socket.on('chat message', function(msg){
-                $('#messages').append($('<li>').text(msg));
-            });
+            let params = getQuerys();
+            let userid = params.hasOwnProperty('userid') ? params['userid'] : 0; // 用户ID
+            let roomid = params.hasOwnProperty('roomid') ? params['roomid'] : 0; // 房间ID
 
-            socket.on('register', function(msg){
-                console.log(msg)
-            });
-
-            // 注册
-            $("button[name='register']").on("click", function(){
-                $this = $(this);
-                $this.attr({disabled:true});
-                let t = setTimeout(function(){
-                    $this.attr({disabled: false});
-                }, 1000);
-
-                socket.emit("register", {username: new Date()});
-            });
-
+            socket.emit('chat', {msg:message, userid:userid, roomid:roomid});
+            $('#m').val('');
+            return false;
         });
-	</script>
-  </body>
+
+        // 聊天
+        socket.on('chat', function(message){
+            message = JSON.stringify(message)
+            $('#messages').append($('<li>').text(message));
+        });
+
+        // 提示消息
+        socket.on("alert msg", function(message) {
+            // alert(message.msg);
+            layui.use('layer', function() {
+                let layer = layui.layer;
+                layer.msg(message.msg);
+            });
+        });
+
+        socket.on('register', function(message){
+            console.log(message)
+        });
+
+        // 注册
+        $("button[name='register']").on("click", function(){
+            $this = $(this);
+            $this.attr({disabled:true});
+            let t = setTimeout(function(){
+                $this.attr({disabled: false});
+            }, 1000);
+
+            socket.emit("register", {username: new Date()});
+        });
+
+    });
+</script>
+
+</body>
 </html>
