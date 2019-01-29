@@ -1,9 +1,8 @@
 'use strict'
 
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+const express = require('express');
+global.app = express();
+global.http = require('http').Server(app);
 
 app.set('views', './views');
 app.set('view engine', 'jade');
@@ -12,6 +11,7 @@ app.engine('jade', require('jade').__express);
 // 设置今天文件目录：使用静态文件必要条件
 app.use(express.static(__dirname + "/static/"));
 
+global.io = require('socket.io')(http);
 global.path = require("path");
 global.url = require("url");
 global.querystring = require("querystring");
@@ -39,29 +39,7 @@ app.get('/', function(req, res){
     // res.render('index', {message: 'hello word'});
 });
 
-app.get('/layuicss', function(req, res) {
-    let fs = require("fs")
-    let mime = require("mime");
-
-    fs.readFile("./static/layui-2.4.5/css/layui.css", "utf-8", function(err, data) {
-        res.writeHead(200, {"content-type":"text/css;charset=utf-8;"});
-        res.write(data);
-        res.end();
-    });
-});
-
-app.get('/layuijs', function(req, res) {
-    let fs = require("fs")
-    let mime = require("mime");
-
-    fs.readFile("./static/layui-2.4.5/layui.js", "utf-8", function(err, data) {
-        res.writeHead(200, {"content-type":"text/javascript;charset=utf-8;"});
-        res.write(data);
-        res.end();
-    });
-});
-
-app.get('/user', async function(req, res){
+/*app.get('/user', async function(req, res){
     let querys = url.parse(req.url, true).query;
     // res.send(querys);
 
@@ -81,44 +59,16 @@ app.get('/user', async function(req, res){
         return users;
     });
     res.send(users);
+});*/
 
+// socket 具体操作
+let chat = require('./wschat');
 
-});
+let test = require('./application/router/user');
 
-// io 监听连接
-io.on('connection', async function(socket) {
-
-    // test.testDbConnect(); // 测试数据库连接是否成功
-
-    // 注册
-    socket.on('register', function(msg){
-        let User = require('./application/controller/user');
-        let regRes = User.register(msg.username);
-        io.emit('register', regRes);
-    });
-
-    // 聊天
-    socket.on('chat', async (msg) => {
-        let userid = msg.hasOwnProperty('userid') ? msg.userid : 0;
-        let roomid = msg.hasOwnProperty('roomid') ? msg.roomid : 0;
-
-        let roomName = "lkl_room_" + roomid.toString();
-
-        let userInfo = {};
-        if (userid > 0) {
-            let userServ = require('./application/service/user');
-            userInfo = await userServ.getUser(userid);
-        }
-
-        // 加入房间
-        socket.join(roomName, ()=>{
-            let rooms = Object.keys(socket.rooms);
-            io.to(roomName).emit('alert msg', {msg:"新用户“" + userInfo[0]['username'] + "”加入房间！"});
-        });
-
-        // io.emit('chat', userInfo[0]);
-    });
-});
+/*require('require-all')({
+    dirname: __dirname + '/application/router'
+});*/
 
 http.listen(3000, function(){
     console.log('listening on *:3000.');

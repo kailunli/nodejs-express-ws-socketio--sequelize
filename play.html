@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+    <title>天作棋盘星作子，谁人敢下？</title>
+    <style type="text/css">
+        #rows, #cols {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: 20px;
+            width: 900px;
+            height: 900px;
+            border: 5px solid #eee;
+        }
+
+        #rows {
+            z-index: 1;
+        }
+
+        #rows {
+            z-index: 2;
+        }
+
+    </style>
+</head>
+<body>
+<div id="rows">
+</div>
+<div id="cols">
+</div>
+
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    $(function() {
+        var draw = function(rowLines=19, colLines=19, lineWidth=2.5) {
+            var perWidth = 45;//((width - (rowLines-1) * lineWidth) / rowLines).toFixed(4);
+            var perHeight = 45;//((height - (colLines-1) * lineWidth) / colLines).toFixed(4);
+            var width = (rowLines - 1) * (perWidth + lineWidth * 2);
+            var height = (colLines - 1) * (perHeight + lineWidth * 2);
+
+            // 竖线
+            for (var col=1; col<=colLines; col++) {
+                var line = "<cols style='position:relative;display:block;width:"+ width +"px;height:"+ perHeight +"px;border:0px;border-top:"+ lineWidth +"px solid #eee;border-bottom:"+ lineWidth +"px solid #eee;z-index: -1;'></cols>";
+                $("#cols").append(line);
+            }
+            // 横线
+            for (var row=1; row<=rowLines; row++) {
+                var line = "<rows style='position:relative;float:left;width:"+ perWidth +"px;height:"+ height +"px;border:0px;border-left:"+ lineWidth +"px solid #eee;border-right:"+ lineWidth +"px solid #eee;z-index: 1;'></rows>";
+                $("#rows").append(line);
+            }
+        };
+
+        draw();
+    });
+</script>
+</body>
+</html>
