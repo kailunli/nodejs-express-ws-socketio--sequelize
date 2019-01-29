@@ -111,8 +111,17 @@
 
         // 聊天
         socket.on('chat', function(message){
-            message = JSON.stringify(message)
-            $('#messages').append($('<li>').text(message));
+            let params = getQuerys();
+            let userid = params.hasOwnProperty('userid') ? params['userid'] : 0; // 用户ID
+            let roomid = params.hasOwnProperty('roomid') ? params['roomid'] : 0; // 房间ID
+
+            console.log(userid == message.userid)
+
+            if (userid == message.userid) {
+                $('#messages').append($('<li style="color: red;">').text(JSON.stringify(message)));
+            } else {
+                $('#messages').append($('<li>').text(JSON.stringify(message)));
+            }
         });
 
         // 提示消息
@@ -154,7 +163,8 @@
             var oriwidth = parseInt($chatdiv.css("width"));
             var oriheight = parseInt($chatdiv.css("height"));
 
-            console.log(marginTop, marginLeft, oriwidth, oriheight)
+            var oriPageX = e.pageX;
+            var oriPageY = e.pageY;
 
             var t = setTimeout(function() {
 
@@ -171,6 +181,8 @@
                         marginLeft = parseInt($chatdiv.css("marginLeft"));
 
                         var $mousemove = $(this);
+                        // var curPageX = event.pageX;
+                        // var curPageY = event.pageY;
                         if (which == 1) { // 持续处于左键按下状态
                             var top = event.pageY - marginTop;
                             var left = event.pageX - marginLeft - oriwidth;

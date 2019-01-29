@@ -39,32 +39,9 @@ app.get('/', function(req, res){
     // res.render('index', {message: 'hello word'});
 });
 
-/*app.get('/user', async function(req, res){
-    let querys = url.parse(req.url, true).query;
-    // res.send(querys);
-
-    let UserModel = require('./application/model/user');
-    let user = await UserModel.model().findByPk(1).then(user=>{
-        return user;
-    });
-    res.send(user);
-
-    let users = UserModel.model().findAll({
-        where: {
-            userid: {
-                [Sequelize.Op.gte]: 3
-            }
-        }
-    }).then(users=>{
-        return users;
-    });
-    res.send(users);
-});*/
-
 // socket 具体操作
 let chat = require('./wschat');
 
-// let test = require('./application/router/user');
 
 require('require-all')({
     dirname: __dirname + '/application/router'
