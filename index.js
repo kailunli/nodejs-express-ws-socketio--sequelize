@@ -64,11 +64,11 @@ app.get('/', function(req, res){
 // socket 具体操作
 let chat = require('./wschat');
 
-let test = require('./application/router/user');
+// let test = require('./application/router/user');
 
-/*require('require-all')({
+require('require-all')({
     dirname: __dirname + '/application/router'
-});*/
+});
 
 http.listen(3000, function(){
     console.log('listening on *:3000.');
