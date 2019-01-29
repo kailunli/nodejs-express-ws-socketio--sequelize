@@ -3,11 +3,10 @@
 module.exports = {
     host: "localhost",
     dialect: "mysql", // "mysql"|"sqlite"|"postgres"|"mssql"
-    database: DATABASE,
-    username: USERNAME,
-    password: PASSWORD,
+    database: 'haoyuezhibo',
+    username: 'root',
+    password: 'root',
     operatorsAliases: false,
-
     pool: {
         max: 5,
         min: 0,

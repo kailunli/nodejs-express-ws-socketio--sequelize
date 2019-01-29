@@ -4,9 +4,11 @@
   "description": "my first ws demo base on nodejs and socket.io",
   "dependencies": {
     "express": "^4.15.2",
+    "ioredis": "^4.5.1",
     "mysql2": "^1.6.4",
     "require-all": "^3.0.0",
     "sequelize": "^4.42.0",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "socket.io-redis": "^5.2.0"
   }
 }
