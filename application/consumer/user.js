@@ -2,7 +2,7 @@
 
 class User {
     constructor() {
-        this.q = 'test';
+        this.q = 'chat';
     }
 
     run(io) {
@@ -19,8 +19,8 @@ class User {
                         let sockets = io.sockets.sockets;
                         let msgObj = JSON.parse(msg.content.toString());
 
-                        sockets[msgObj.socketid].emit(emiters["alert msg"], {msg: msg.content.toString()})
-                        // io.emit('alert msg', {msg: msg.content.toString()});
+                        //sockets[msgObj.socketid].emit(emiters["public chat"], msg.content.toString())
+                        io.emit(emiters["public chat"], msgObj);
                     }
                 });
             });

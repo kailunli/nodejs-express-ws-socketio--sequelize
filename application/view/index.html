@@ -104,23 +104,22 @@
             let userid = params.hasOwnProperty('userid') ? params['userid'] : 0; // 用户ID
             let roomid = params.hasOwnProperty('roomid') ? params['roomid'] : 0; // 房间ID
 
-            socket.emit('chat', {msg:message, userid:userid, roomid:roomid});
+            socket.emit('public chat', {msg:message, userid:userid, roomid:roomid});
             $('#m').val('');
             return false;
         });
 
         // 聊天
-        socket.on('chat', function(message){
+        socket.on('public chat', function(message){
             let params = getQuerys();
             let userid = params.hasOwnProperty('userid') ? params['userid'] : 0; // 用户ID
             let roomid = params.hasOwnProperty('roomid') ? params['roomid'] : 0; // 房间ID
 
-            console.log(userid == message.userid)
-
+            let msgText = message.user.username + "[ID="+ message.userid +"]: " + message.msg;
             if (userid == message.userid) {
-                $('#messages').append($('<li style="color: red;">').text(JSON.stringify(message)));
+                $('#messages').append($('<li style="color: red;">').text(msgText));
             } else {
-                $('#messages').append($('<li>').text(JSON.stringify(message)));
+                $('#messages').append($('<li>').text(msgText));
             }
         });
 

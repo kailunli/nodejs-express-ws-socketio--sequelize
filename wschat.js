@@ -21,9 +21,10 @@ io.on('connection', async function(socket) {
     });
 
     // 聊天
-    socket.on('chat', async (msg) => {
+    socket.on('public chat', async (msg) => {
         let userid = msg.hasOwnProperty('userid') ? msg.userid : 0;
         let roomid = msg.hasOwnProperty('roomid') ? msg.roomid : 0;
+        let msgInfo = msg.msg;
 
         let roomName = "lkl_room_" + roomid.toString();
 
@@ -45,19 +46,19 @@ io.on('connection', async function(socket) {
         // 加入房间
         socket.join(roomName, ()=>{
             let rooms = Object.keys(socket.rooms);
-            let msg = "新用户“" + userInfo[0]['username'] + "”加入房间！";
+            //let msg = "新用户“" + userInfo[0]['username'] + "”加入房间！";
             //io.to(roomName).emit('alert msg', {userid: userid, msg: msg}); // 不会将消息发送给房间中除发送者的所有人
             // io.in(roomName).emit('alert msg', {msg: msg}); // 会将消息发送给该房间中的所有人
             //funcs.writeFile("./test_data.txt", msg + "\r\n");
 
             // 数据进入mq队列
-            let q = 'test';
+            let q = 'chat';
             // Publisher
             amqp.then(function (conn) {
                 return conn.createChannel();
             }).then(function(ch) {
                 return ch.assertQueue(q).then(function (ok) {
-                    ch.sendToQueue(q, Buffer.from(JSON.stringify({socketid:socket.id, message:userInfo[0]})));
+                    ch.sendToQueue(q, Buffer.from(JSON.stringify({socketid:socket.id, userid:userid, msg:msgInfo, user:userInfo[0]})));
                 });
             }).catch(console.warn);
         });
