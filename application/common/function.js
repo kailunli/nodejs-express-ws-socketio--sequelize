@@ -1,6 +1,22 @@
 'use strict'
 
 class Function {
+    objlength (obj) {
+        if (typeof obj == 'object') {
+            if (obj instanceof Array) {
+                return obj.length;
+            }
+            if (obj instanceof Object) {
+                var length = 0;
+                for (var i in obj) {
+                    length++;
+                }
+                return length;
+            }
+        }
+        return 0;
+    }
+
     getValue (data, index=0) {
         try {
             return data[index]['dataValues'];

@@ -1,7 +1,19 @@
 'use strict'
 
+let redisConf = require('./application/redis_conf');
+// socket.io-redis 该模块通过Redis订阅/发布（SUBSCRIBE/PUBLISH）机制实现(包含多服务器)多进程共享数据和通信。非开发人员代码操作redis服务
+io.adapter(require('socket.io-redis')({
+    host: redisConf.host,
+    port: redisConf.port,
+    password: redisConf.auth
+}));
+
+global.sockets = {};
+
 // io 监听连接
 io.on('connection', async function(socket) {
+    // 消费者
+    let consumer = await require('./consumer').start(io);
 
     // test.testDbConnect(); // 测试数据库连接是否成功
 
@@ -30,7 +42,7 @@ io.on('connection', async function(socket) {
 
         // 用户不存在
         if (JSON.stringify(userInfo) == '{}') { // JSON对象判断值是否相等
-            socket.emit("alert msg", {msg: "用户ID="+ userid +"不存在！"});
+            // socket.emit("alert msg", {msg: "用户ID="+ userid +"不存在！"});
             return ;
         }
 
@@ -38,12 +50,20 @@ io.on('connection', async function(socket) {
         socket.join(roomName, ()=>{
             let rooms = Object.keys(socket.rooms);
             let msg = "新用户“" + userInfo[0]['username'] + "”加入房间！";
-            io.to(roomName).emit('alert msg', {userid: userid, msg: msg}); // 不会将消息发送给房间中除发送者的所有人
+            //io.to(roomName).emit('alert msg', {userid: userid, msg: msg}); // 不会将消息发送给房间中除发送者的所有人
             // io.in(roomName).emit('alert msg', {msg: msg}); // 会将消息发送给该房间中的所有人
+            //funcs.writeFile("./test_data.txt", msg + "\r\n");
 
-            funcs.writeFile("./test_data.txt", msg + "\r\n");
+            // 数据进入mq队列
+            let q = 'test';
+            // Publisher
+            amqp.then(function (conn) {
+                return conn.createChannel();
+            }).then(function(ch) {
+                return ch.assertQueue(q).then(function (ok) {
+                    ch.sendToQueue(q, Buffer.from(JSON.stringify({socketid:socket.id, message:userInfo[0]})));
+                });
+            }).catch(console.warn);
         });
-
-        io.emit('chat', userInfo[0]);
     });
 });

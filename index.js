@@ -16,21 +16,7 @@ global.path = require("path");
 global.url = require("url");
 global.querystring = require("querystring");
 
-// socket.io-redis 该模块通过Redis订阅/发布（SUBSCRIBE/PUBLISH）机制实现(包含多服务器)多进程共享数据和通信。非开发人员代码操作redis服务
-global.redisConf = require('./application/redis');
-io.adapter(require('socket.io-redis')({
-    host: redisConf.host,
-    port: redisConf.port,
-    password: redisConf.auth
-}));
-
-// ioredis 开发人员代码操作使用的redis服务
-const Redis = require("ioredis");
-global.redis = new Redis({
-    host: redisConf.host,
-    port: redisConf.port,
-    password: redisConf.auth
-});
+global.redis = require('./redis');
 
 // 测试类
 global.test = require('./application/test');
@@ -46,18 +32,14 @@ global.sequelize = new Sequelize(database.database, database.username, database.
     pool: database.pool
 });
 
-app.get('/', function(req, res){
-    let params = url.parse(req.url, true).query;
-
-    // res.send(params);
-    // res.send('<h1>Hello World</h1>');
-    res.sendFile(__dirname + "/index.html");
-    // res.render('index', {message: 'hello word'});
-});
+// rabbitmq
+global.amqp = require('./amqp');
 
 // socket 具体操作
-let chat = require('./wschat');
+let wschat = require('./wschat');
 
+// test
+require('./test');
 
 require('require-all')({
     dirname: __dirname + '/application/router'

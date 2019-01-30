@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "my first ws demo base on nodejs and socket.io",
   "dependencies": {
+    "amqp": "^0.2.7",
+    "amqplib": "^0.5.3",
     "express": "^4.15.2",
     "ioredis": "^4.5.1",
     "mysql2": "^1.6.4",
