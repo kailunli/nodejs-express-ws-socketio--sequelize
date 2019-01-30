@@ -58,7 +58,7 @@ io.on('connection', async function(socket) {
                 return conn.createChannel();
             }).then(function(ch) {
                 return ch.assertQueue(q).then(function (ok) {
-                    ch.sendToQueue(q, Buffer.from(JSON.stringify({socketid:socket.id, userid:userid, msg:msgInfo, user:userInfo[0]})));
+                    ch.sendToQueue(q, Buffer.from(JSON.stringify({publish_time: (new Date()).getTime(), socketid:socket.id, userid:userid, msg:msgInfo, user:userInfo[0]})));
                 });
             }).catch(console.warn);
         });

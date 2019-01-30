@@ -1,14 +1,4 @@
-objectobjectobject新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“2019-01-18T06:52:13.130Z”加入房间！
-新用户“llkl”加入房间！
+
+{"publish_time":1548840430217,"socketid":"Goa7eMleKJcLY1-TAAAD","userid":"10","msg":"hello world","user":{"userid":10,"username":"llkl","create_at":1547864742,"update_at":0},"consume_time":1548840430220}
+{"publish_time":1548840690318,"socketid":"Goa7eMleKJcLY1-TAAAD","userid":"10","msg":"kkkkkkk'","user":{"userid":10,"username":"llkl","create_at":1547864742,"update_at":0},"consume_time":1548840690319}
+{"publish_time":1548840720161,"socketid":"NHAva_GZBE_yEMHmAAAB","userid":"11","msg":"llllllllllllllllllllllllllll","user":{"userid":11,"username":"llkl","create_at":1547864825,"update_at":0},"consume_time":1548840720162}

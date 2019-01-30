@@ -15,12 +15,14 @@ class User {
                     if (msg != null) {
                         ch.ack(msg);
 
-
                         let sockets = io.sockets.sockets;
                         let msgObj = JSON.parse(msg.content.toString());
+                        msgObj["consume_time"] = (new Date()).getTime();
 
                         //sockets[msgObj.socketid].emit(emiters["public chat"], msg.content.toString())
                         io.emit(emiters["public chat"], msgObj);
+
+                        funcs.writeFile('./test_data.txt', JSON.stringify(msgObj) + "\r\n");
                     }
                 });
             });
