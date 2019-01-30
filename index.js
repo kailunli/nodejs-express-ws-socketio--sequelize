@@ -11,6 +11,9 @@ app.engine('jade', require('jade').__express);
 // 设置静态文件目录：使用静态文件必要条件
 app.use(express.static(__dirname + "/static/"));
 
+// emiter 事件
+global.emiters = require('./application/emiter');
+
 global.io = require('socket.io')(http);
 global.path = require("path");
 global.url = require("url");

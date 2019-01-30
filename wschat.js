@@ -8,14 +8,10 @@ io.adapter(require('socket.io-redis')({
     password: redisConf.auth
 }));
 
-global.sockets = {};
-
 // io 监听连接
 io.on('connection', async function(socket) {
     // 消费者
     let consumer = await require('./consumer').start(io);
-
-    // test.testDbConnect(); // 测试数据库连接是否成功
 
     // 注册
     socket.on('register', function(msg){
