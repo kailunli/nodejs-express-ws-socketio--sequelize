@@ -1,5 +1,6 @@
 'use strict'
 
+const path = require("path");
 const UserServ = require(path.resolve(__dirname, "..") + "/service/user");
 
 

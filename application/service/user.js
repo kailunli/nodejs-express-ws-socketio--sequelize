@@ -1,5 +1,6 @@
 'use strict'
 
+const path = require("path");
 const user = require(path.resolve(__dirname, "..") + "/model/user");
 
 class User {

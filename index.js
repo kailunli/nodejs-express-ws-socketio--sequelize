@@ -2,31 +2,27 @@
 
 const express = require('express');
 global.app = express();
-global.http = require('http').Server(app);
+const http = require('http').Server(app);
+// socket.io
+global.io = require('socket.io')(http);
 
 app.set('views', './views');
 app.set('view engine', 'jade');
-app.engine('jade', require('jade').__express);
-
-// 设置静态文件目录：使用静态文件必要条件
-app.use(express.static(__dirname + "/static/"));
-
-// emiter 事件
-global.emiters = require('./application/emiter');
-
-global.io = require('socket.io')(http);
-global.path = require("path");
-global.url = require("url");
-global.querystring = require("querystring");
-
-global.redis = require('./redis');
+// app.engine('jade', require('jade').__express); // 使用jade模板引擎
+app.use(express.static(__dirname + "/static/")); // // 设置静态文件目录：使用静态文件必要条件
 
 // 测试类
 global.test = require('./application/test');
 // 公共函数类
-global.funcs = require('./application/common/function');
-
-global.database = require('./application/database');
+global.helper = require('./application/common/helper');
+// emiter 事件 配置
+global.emiters = require('./application/emiter');
+// redis 模块
+global.redis = require('./redis');
+// rabbitmq 模块
+global.amqp = require('./amqp');
+// 数据库操作模块
+const database = require('./application/database');
 global.Sequelize = require('sequelize');
 global.sequelize = new Sequelize(database.database, database.username, database.password, {
     host: database.host,
@@ -35,16 +31,11 @@ global.sequelize = new Sequelize(database.database, database.username, database.
     pool: database.pool
 });
 
-// rabbitmq
-global.amqp = require('./amqp');
-
 // socket 具体操作
-let wschat = require('./wschat');
+const wschat = require('./wschat');
 
-// test
-require('./test');
-
-require('require-all')({
+// express 路由
+let routers = require('require-all')({
     dirname: __dirname + '/application/router'
 });
 

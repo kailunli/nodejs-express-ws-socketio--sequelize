@@ -1,7 +1,16 @@
 'use strict'
 
 module.exports = {
-    "alert msg":"alert msg", // 提示信息
-    "private chat": "private chat", // 聊天
-    "public chat": "public chat", // 公共聊天
+    "alert msg":{
+        name: "alert msg",
+        desc: "提示信息"
+    },
+    "private chat": {
+        name: "private chat",
+        desc: "私聊"
+    },
+    "public chat": {
+        name: "public chat",
+        desc: "公共聊天"
+    }
 };

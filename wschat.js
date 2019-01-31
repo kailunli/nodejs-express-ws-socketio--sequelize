@@ -1,6 +1,6 @@
 'use strict'
 
-let redisConf = require('./application/redis_conf');
+const redisConf = require('./application/redis_conf');
 // socket.io-redis 该模块通过Redis订阅/发布（SUBSCRIBE/PUBLISH）机制实现(包含多服务器)多进程共享数据和通信。非开发人员代码操作redis服务
 io.adapter(require('socket.io-redis')({
     host: redisConf.host,
@@ -49,7 +49,7 @@ io.on('connection', async function(socket) {
             //let msg = "新用户“" + userInfo[0]['username'] + "”加入房间！";
             //io.to(roomName).emit('alert msg', {userid: userid, msg: msg}); // 不会将消息发送给房间中除发送者的所有人
             // io.in(roomName).emit('alert msg', {msg: msg}); // 会将消息发送给该房间中的所有人
-            //funcs.writeFile("./test_data.txt", msg + "\r\n");
+            //helper.writeFile("./test_data.txt", msg + "\r\n");
 
             // 数据进入mq队列
             let q = 'chat';

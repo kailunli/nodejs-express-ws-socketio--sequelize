@@ -20,9 +20,9 @@ class User {
                         msgObj["consume_time"] = (new Date()).getTime();
 
                         //sockets[msgObj.socketid].emit(emiters["public chat"], msg.content.toString())
-                        io.emit(emiters["public chat"], msgObj);
+                        io.emit(emiters["public chat"].name, msgObj);
 
-                        funcs.writeFile('./test_data.txt', JSON.stringify(msgObj) + "\r\n");
+                        helper.writeFile('./test_data.txt', JSON.stringify(msgObj) + "\r\n");
                     }
                 });
             });

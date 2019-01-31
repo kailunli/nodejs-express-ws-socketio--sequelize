@@ -1,5 +1,8 @@
 'use strict'
 
+const path = require("path");
+const viewpath = path.resolve(__dirname, '..') + '/view/';
+
 app.get('/user/:userid', async function(req, res){
     let params = req.params;
     let userid = params.hasOwnProperty('userid') ? parseInt(params.userid) : 0;

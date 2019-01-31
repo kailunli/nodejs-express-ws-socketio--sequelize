@@ -1,6 +1,6 @@
 'use strict'
 
-class Function {
+class Helper {
     objlength (obj) {
         if (typeof obj == 'object') {
             if (obj instanceof Array) {
@@ -58,4 +58,4 @@ class Function {
 
 
 
-module.exports = new Function();
+module.exports = new Helper();
