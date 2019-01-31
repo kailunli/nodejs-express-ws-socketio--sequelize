@@ -22,7 +22,7 @@ class User {
                         //sockets[msgObj.socketid].emit(emiters["public chat"], msg.content.toString())
                         io.emit(emiters["public chat"].name, msgObj);
 
-                        helper.writeFile('./test_data.txt', JSON.stringify(msgObj) + "\r\n");
+                        // helper.writeFile('./test_data.txt', JSON.stringify(msgObj) + "\r\n");
                     }
                 });
             });

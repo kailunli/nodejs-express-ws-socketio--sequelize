@@ -29,7 +29,7 @@ class Helper {
         try {
             let res = [];
             for (let i in data) {
-                res[i] = data[i]['dataValues'];
+                res.push(data[i]['dataValues']);
             }
             return res;
         } catch (e) {

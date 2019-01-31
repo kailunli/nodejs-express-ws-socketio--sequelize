@@ -10,9 +10,6 @@ io.adapter(require('socket.io-redis')({
 
 // io 监听连接
 io.on('connection', async function(socket) {
-    // 消费者
-    let consumer = await require('./consumer').start(io);
-
     // 注册
     socket.on('register', function(msg){
         let User = require('./application/controller/user');

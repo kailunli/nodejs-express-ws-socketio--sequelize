@@ -21,6 +21,8 @@ global.emiters = require('./application/emiter');
 global.redis = require('./redis');
 // rabbitmq 模块
 global.amqp = require('./amqp');
+// 消费者
+let consumer = require('./consumer').start(io);
 // 数据库操作模块
 const database = require('./application/database');
 global.Sequelize = require('sequelize');
