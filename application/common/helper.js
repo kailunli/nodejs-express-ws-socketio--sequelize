@@ -38,15 +38,19 @@ class Helper {
     }
 
     // 写入文件
-    writeFile (filepath, content, options={flag:'a'}, callback=function(){}) {
-        if (typeof filepath == "string" && typeof filepath == "string") {
+    writeFile (filepath, content, options={flag:'a'}, callback=function(writeRes){}) {
+        if (typeof filepath == "string" && typeof content == "string") {
             let fs = require("fs");
-            return fs.writeFile(filepath, content, options, callback);
+            let writeRes = fs.writeFile(filepath, content, options, callback);
+            if (typeof callback == "function") {
+                callback(writeRes);
+            }
+            return writeRes;
         }
         return false;
     }
 
-    demo (req, res, filepath, header={"content-type":"text/html;charset=utf-8;"}, status=200) {
+    test (req, res, filepath, header={"content-type":"text/html;charset=utf-8;"}, status=200) {
         let fs = require("fs")
         fs.readFile(filepath, "utf-8", function(err, data) {
             res.writeHead(status, header);
