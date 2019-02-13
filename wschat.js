@@ -5,7 +5,7 @@ const redisConf = require('./application/redis_conf');
 io.adapter(require('socket.io-redis')({
     host: redisConf.host,
     port: redisConf.port,
-    password: redisConf.auth
+    // password: redisConf.auth
 }));
 
 // io 监听连接
@@ -49,15 +49,19 @@ io.on('connection', async function(socket) {
             //helper.writeFile("./test_data.txt", msg + "\r\n");
 
             // 数据进入mq队列
-            let q = 'chat';
+            let queue = "chat";
+            let exchange = "test.demo.chat";
+
             // Publisher
-            amqp.then(function (conn) {
+            /*amqp.then(function (conn) {
                 return conn.createChannel();
             }).then(function(ch) {
                 return ch.assertQueue(q).then(function (ok) {
                     ch.sendToQueue(q, Buffer.from(JSON.stringify({publish_time: (new Date()).getTime(), socketid:socket.id, userid:userid, msg:msgInfo, user:userInfo[0]})));
                 });
-            }).catch(console.warn);
+            }).catch(console.warn);*/
+
+            rabbitamqp.produce(queue, exchange, "fanout", Buffer.from(JSON.stringify({publish_time: (new Date()).getTime(), socketid:socket.id, userid:userid, msg:msgInfo, user:userInfo[0]})));
         });
     });
 });

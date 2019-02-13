@@ -50,6 +50,21 @@ class Helper {
         return false;
     }
 
+    // 通过socket 获取客户端IP
+    getClientIp(socket) {
+        let ip = null;
+        if (socket.handshake.headers['x-forwarded-for'] != null) {
+            ip = socket.handshake.headers['x-forwarded-for'];
+        } else {
+            if (socket.handshake.address.substr(0, 7) === "::ffff:") {
+                ip = socket.handshake.address.substr(7);
+            } else {
+                ip = socket.handshake.address;
+            }
+        }
+        return ip;
+    }
+
     test (req, res, filepath, header={"content-type":"text/html;charset=utf-8;"}, status=200) {
         let fs = require("fs")
         fs.readFile(filepath, "utf-8", function(err, data) {

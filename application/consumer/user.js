@@ -2,12 +2,11 @@
 
 class User {
     constructor() {
-        this.q = 'chat';
     }
 
     run(io) {
         let $this = this;
-        amqp.then(function (conn) {
+        /*amqp.then(function (conn) {
             return conn.createChannel();
         }).then(function (ch) {
             return ch.assertQueue($this.q).then(function (ok) {
@@ -26,7 +25,21 @@ class User {
                     }
                 });
             });
-        }).catch(console.warn)
+        }).catch(console.warn)*/
+
+        rabbitamqp.consume("chat", function (content) {
+            if (content != null) {
+                let message = content.content.toString();
+                let sockets = io.sockets.sockets;
+                let msgObj = JSON.parse(message);
+                msgObj["consume_time"] = (new Date()).getTime();
+
+                //sockets[msgObj.socketid].emit(emiters["public chat"], message)
+                io.emit(emiters["public chat"].name, msgObj);
+
+                // helper.writeFile('./test_data.txt', JSON.stringify(msgObj) + "\r\n");
+            }
+        });
     }
 }
 
