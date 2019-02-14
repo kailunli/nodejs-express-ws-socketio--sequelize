@@ -22,7 +22,7 @@ io.on('connection', async function(socket) {
     });
 
     // 聊天
-    socket.on('public chat', async (msg) => {
+    socket.on('test demo', async (msg) => {
         let userid = msg.hasOwnProperty('userid') ? msg.userid : 0;
         let roomid = msg.hasOwnProperty('roomid') ? msg.roomid : 0;
         let msgInfo = msg.msg;
@@ -53,7 +53,7 @@ io.on('connection', async function(socket) {
             //helper.writeFile("./test_data.txt", msg + "\r\n");
 
             // 数据进入mq队列
-            let queueName = "private chat";
+            let queueName = "test demo";
 
             // Publisher
             /*amqp.then(function (conn) {
@@ -66,7 +66,7 @@ io.on('connection', async function(socket) {
 
             helper.writeFile('./test_data.txt', JSON.stringify(userInfo[0]) + "\r\n");
 
-            rabbitamqp.produce(queueName, Buffer.from(JSON.stringify({publish_time: (new Date()).getTime(), socketid:socket.id, userid:userid, msg:msgInfo, user:userInfo[0]})));
+            rabbitamqp.publisher(queueName, Buffer.from(JSON.stringify({publish_time: (new Date()).getTime(), socketid:socket.id, userid:userid, msg:msgInfo, user:userInfo[0]})));
         });
     });
 });

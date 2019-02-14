@@ -13,7 +13,9 @@ class Consumer {
         Object.keys(consumers).forEach(function (key) {
             (()=>{
                 try {
-                    consumers[key].run(io);
+                    if (typeof consumers[key] == "object" && typeof consumers[key].run == "function") {
+                        consumers[key].run(io);
+                    }
                 } catch (e) {
                     throw e;
                 }

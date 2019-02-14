@@ -104,13 +104,13 @@
             let userid = params.hasOwnProperty('userid') ? params['userid'] : 0; // 用户ID
             let roomid = params.hasOwnProperty('roomid') ? params['roomid'] : 0; // 房间ID
 
-            socket.emit('public chat', {msg:message, userid:userid, roomid:roomid});
+            socket.emit('test demo', {msg:message, userid:userid, roomid:roomid});
             $('#m').val('');
             return false;
         });
 
         // 聊天
-        socket.on('public chat', function(message){
+        socket.on('test demo', function(message){
             let params = getQuerys();
             let userid = params.hasOwnProperty('userid') ? params['userid'] : 0; // 用户ID
             let roomid = params.hasOwnProperty('roomid') ? params['roomid'] : 0; // 房间ID

@@ -2,9 +2,11 @@
 
 const path = require("path");
 const user = require(path.resolve(__dirname, "..") + "/model/user");
+const Base = require('./base');
 
-class User {
+class User extends Base {
     constructor() {
+        super(); // 实现父类构造器
         this.UserModel = user.model();
     }
 
@@ -39,7 +41,6 @@ class User {
      * 获取用户列表
      * @param page
      * @param size
-     * @returns {PromiseLike<T | never> | Promise<T | never>}
      */
     getUserList(page=1, size=20) {
         let User = this.UserModel;

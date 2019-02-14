@@ -65,6 +65,32 @@ class Helper {
         return ip;
     }
 
+    getQueue(name) {
+        if (name && typeof name == "string") {
+            if (queues.hasOwnProperty(name)) {
+                return queues[name];
+            }
+        }
+
+        if (queues.hasOwnProperty("default")) {
+            return queues["defualt"];
+        }
+        return null;
+    }
+
+    getEmiter(name) {
+        if (name && typeof name == "string") {
+            if (emiters.hasOwnProperty(name)) {
+                return emiters[name];
+            }
+        }
+
+        if (emiters.hasOwnProperty("default")) {
+            return emiters["defualt"];
+        }
+        return null;
+    }
+
     test (req, res, filepath, header={"content-type":"text/html;charset=utf-8;"}, status=200) {
         let fs = require("fs")
         fs.readFile(filepath, "utf-8", function(err, data) {
