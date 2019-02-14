@@ -9,8 +9,8 @@ class User {
         /*amqp.then(function (conn) {
             return conn.createChannel();
         }).then(function (ch) {
-            return ch.assertQueue($this.q).then(function (ok) {
-                return ch.consume($this.q, function (msg) {
+            return ch.assertQueue("chat").then(function (ok) {
+                return ch.consume("chat", function (msg) {
                     if (msg != null) {
                         ch.ack(msg);
 
@@ -27,7 +27,7 @@ class User {
             });
         }).catch(console.warn)*/
 
-        rabbitamqp.consume("chat", function (content) {
+        rabbitamqp.consume("private chat", function (content) {
             if (content != null) {
                 let message = content.content.toString();
                 let sockets = io.sockets.sockets;

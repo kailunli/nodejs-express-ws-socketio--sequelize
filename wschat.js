@@ -1,12 +1,16 @@
 'use strict'
 
-const redisConf = require('./application/redis_conf');
-// socket.io-redis 该模块通过Redis订阅/发布（SUBSCRIBE/PUBLISH）机制实现(包含多服务器)多进程共享数据和通信。非开发人员代码操作redis服务
-io.adapter(require('socket.io-redis')({
+let redisConf = require('./application/common/redis_conf');
+let options = {
     host: redisConf.host,
     port: redisConf.port,
-    // password: redisConf.auth
-}));
+};
+
+if (redisConf.hasOwnProperty("auth") && redisConf.auth) {
+    options["password"] = auth;
+}
+// socket.io-redis 该模块通过Redis订阅/发布（SUBSCRIBE/PUBLISH）机制实现(包含多服务器)多进程共享数据和通信。非开发人员代码操作redis服务
+io.adapter(require('socket.io-redis')(options));
 
 // io 监听连接
 io.on('connection', async function(socket) {
@@ -49,8 +53,7 @@ io.on('connection', async function(socket) {
             //helper.writeFile("./test_data.txt", msg + "\r\n");
 
             // 数据进入mq队列
-            let queue = "chat";
-            let exchange = "test.demo.chat";
+            let queueName = "private chat";
 
             // Publisher
             /*amqp.then(function (conn) {
@@ -61,7 +64,9 @@ io.on('connection', async function(socket) {
                 });
             }).catch(console.warn);*/
 
-            rabbitamqp.produce(queue, Buffer.from(JSON.stringify({publish_time: (new Date()).getTime(), socketid:socket.id, userid:userid, msg:msgInfo, user:userInfo[0]})), exchange, "fanout");
+            helper.writeFile('./test_data.txt', JSON.stringify(userInfo[0]) + "\r\n");
+
+            rabbitamqp.produce(queueName, Buffer.from(JSON.stringify({publish_time: (new Date()).getTime(), socketid:socket.id, userid:userid, msg:msgInfo, user:userInfo[0]})));
         });
     });
 });

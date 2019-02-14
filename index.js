@@ -23,11 +23,12 @@ global.test = require('./application/test');
 global.helper = require('./application/common/helper');
 // emiter 事件 配置
 global.emiters = require('./application/emiter');
+// 消息队列
+global.queues = require('./application/queue').queue;
 // redis 模块
-global.redis = require('./redis');
+global.redis = require('./extend/redis');
 // rabbitmq 模块
-global.rabbitamqp = require('./application/rabbitmq');
-global.amqp = require('./amqp');
+global.rabbitamqp = require('./extend/rabbitmq');
 // 消费者
 let consumer = require('./consumer').start(io);
 // 数据库操作模块
@@ -53,10 +54,11 @@ let routers = require('require-all')({
 });*/
 
 // https://www.npmjs.com/package/sticky-session
-if (!sticky.listen(server, 3000)) {
+let port = 3000;
+if (!sticky.listen(server, port)) {
     // Master code
     server.once('listening', function() {
-        console.log('server started on 3000 port!');
+        console.log('server started on port '+ port +'!');
     });
 } else {
     console.log('worker started on work id ' + cluster.worker.id + ' and pid ' + cluster.worker.process.pid + '.');

@@ -11,9 +11,9 @@ class Consumer {
         });
 
         Object.keys(consumers).forEach(function (key) {
-            (async ()=>{
+            (()=>{
                 try {
-                    await consumers[key].run(io);
+                    consumers[key].run(io);
                 } catch (e) {
                     throw e;
                 }
