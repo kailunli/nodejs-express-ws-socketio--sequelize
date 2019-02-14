@@ -61,7 +61,7 @@ io.on('connection', async function(socket) {
                 });
             }).catch(console.warn);*/
 
-            rabbitamqp.produce(queue, exchange, "fanout", Buffer.from(JSON.stringify({publish_time: (new Date()).getTime(), socketid:socket.id, userid:userid, msg:msgInfo, user:userInfo[0]})));
+            rabbitamqp.produce(queue, Buffer.from(JSON.stringify({publish_time: (new Date()).getTime(), socketid:socket.id, userid:userid, msg:msgInfo, user:userInfo[0]})), exchange, "fanout");
         });
     });
 });
