@@ -5,7 +5,7 @@ const url = require("url");
 const querystring = require("querystring");
 const viewpath = path.resolve(__dirname, '..') + '/view/';
 
-app.get('/', function(req, res){
+app.get('/index', function(req, res){
     // let params = url.parse(req.url, true).query;
     // res.send(params);
     // res.send('<h1>Hello World</h1>');
@@ -13,7 +13,7 @@ app.get('/', function(req, res){
     res.sendFile(viewpath + "index.html");
 });
 
-app.get('/emiters', function (req, res) {
+app.get('/index/emiters', function (req, res) {
     let querys = req.query;
 
     if (JSON.stringify(querys) == "{}") { // 没有参数

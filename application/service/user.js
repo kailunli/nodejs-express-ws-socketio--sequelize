@@ -30,11 +30,23 @@ class User extends Base {
             where['username'] = {[Op.like]:username}
         }
 
+        /*
+        // ORM模式 操作sql
         return User.sync().then(()=>{
             return User.findAll({
                 where: where
             });
+        });*/
+
+        // 原生sql模式 操作sql
+        let user = db.query("select * from lkl_user where id=:userid", {
+            replaceements: {
+                userid: parseInt(userId)
+            },
+            type: db.QueryTypes.SELECT
         });
+
+        return user;
     }
 
     /**

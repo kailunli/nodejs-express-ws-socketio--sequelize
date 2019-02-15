@@ -6,7 +6,7 @@ class User {
     }
 
     model() {
-        return sequelize.define(this.table, this.entity(), this.option())
+        return sequelize.define(this.table, this.entity(), this.option());
     }
 
     entity() {

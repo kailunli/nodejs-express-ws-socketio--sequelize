@@ -27,6 +27,8 @@ global.emiters = require('./application/emiter');
 global.queues = require('./application/queue').queue;
 // redis 模块
 global.redis = require('./extend/redis');
+// mongo模块
+global.mongo = require('./extend/mongo');
 // rabbitmq 模块
 global.rabbitamqp = require('./extend/rabbitmq');
 // 消费者
@@ -34,7 +36,7 @@ let consumer = require('./consumer').start(io);
 // 数据库操作模块
 const database = require('./application/database');
 global.Sequelize = require('sequelize');
-global.sequelize = new Sequelize(database.database, database.username, database.password, {
+global.sequelize = global.db = new Sequelize(database.database, database.username, database.password, {
     host: database.host,
     dialect: database.dialect,
     operatorsAliases: database.operatorsAliases,
@@ -54,6 +56,10 @@ let routers = require('require-all')({
 });*/
 
 // https://www.npmjs.com/package/sticky-session
+/**
+ *  在启动服务时进行操作，cpu的每个核（处理器）都会进行操作
+ *  在启动服务之后进行操作，cpu只会有一个核（处理器）进行操作
+ */
 let port = 3000;
 if (!sticky.listen(server, port)) {
     // Master code
@@ -63,5 +69,3 @@ if (!sticky.listen(server, port)) {
 } else {
     console.log('worker started on work id ' + cluster.worker.id + ' and pid ' + cluster.worker.process.pid + '.');
 }
-
-
