@@ -1,5 +1,7 @@
 'use strict'
 
+const path = require('path');
+
 class Test {
     constructor() {
 
@@ -27,9 +29,28 @@ class Test {
             ], function(err, result) {
                 console.log("Inserted 3 documents into the collection");
             });
-
         });
+
         console.log("test mongo success!")
+    }
+
+    testMongoose() {
+        let conn = mongoose.conn();
+        // 使用model service 层
+        const BlogPost = conn.model('BlogPost'); // 在service层获取BlogPost Model
+
+        let post = new BlogPost({"title":"hello1"});
+
+        post.save(function (err) {
+            if (!err) console.log('Success!');
+        });
+
+
+
+
+
+        console.log("test mongoose success!")
+
     }
 }
 

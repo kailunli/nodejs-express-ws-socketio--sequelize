@@ -1,6 +1,6 @@
 'use strict'
 
-const MongoClient = require('mongodb').MongoClient;
+const mongoClient = require('mongodb').MongoClient;
 // const assert = require('assert');
 
 class Mongo {
@@ -11,12 +11,23 @@ class Mongo {
     }
 
     conn(callback) {
-        MongoClient.connect(this.url, function (err, client) {
-            if (typeof callback == "function") {
-                callback(err, client);
-            }
-            client.close();
-        })
+        try {
+            mongoClient.connect(this.url, {
+                useNewUrlParser: true,
+                bufferMaxEntries: 0,
+                autoReconnect: true,   // default is true, you can ignore it
+                poolSize: 5,           // default is 5, you can ignore it
+            }, function (err, client) {
+                /*if (typeof callback == "function") {
+                    callback(err, client);
+                }
+                client.close();*/
+            });
+
+            return mongoClient;
+        } catch (e) {
+            throw e;
+        }
     }
 }
 
